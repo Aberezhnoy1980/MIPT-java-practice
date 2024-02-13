@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>webinar001</module>
+        <module>API Operations History</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -7,22 +7,21 @@ import java.util.Scanner;
 
 public class Main {
     private static final Scanner sc = new Scanner(System.in);
-
     public static void main(String[] args) {
 
         final ArrayList<Transaction> transactions = new ArrayList<>();
-        int i = 0;
-        while (i != 5) {
-            i++;
-            System.out.print("Please, enter any integer for id: ");
-            int outerId = sc.nextInt();
+        int i = 1;
+        while (i < 6) {
+//            System.out.print("Please, enter any integer for id: ");
+//            int outerId = sc.nextInt();
 
-            System.out.print("Please, enter any double for amount (use ',' as delimiter): ");
+            System.out.printf("Please, enter any double amount (use ',' as delimiter) for transaction #%d: ",  i);
             double outerAmount = sc.nextDouble();
 
-            System.out.print("Please, enter any date in format dd/MM/yyyy for date: ");
+            System.out.printf("Please, enter any date in format dd/MM/yyyy for transaction #%d: ", i);
             LocalDate outerDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            transactions.add(new Transaction(outerId, outerAmount, outerDate));
+            transactions.add(new Transaction(i, outerAmount, outerDate));
+            i++;
         }
 
         System.out.println(transactions);

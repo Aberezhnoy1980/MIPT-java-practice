@@ -11,6 +11,7 @@
         <module>webinar001</module>
         <module>API Operations History</module>
         <module>webinar002</module>
+        <module>webinar003</module>
     </modules>
     <packaging>pom</packaging>
 

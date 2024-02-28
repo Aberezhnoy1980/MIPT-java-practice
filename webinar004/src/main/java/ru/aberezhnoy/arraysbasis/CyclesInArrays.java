@@ -1,5 +1,7 @@
 package ru.aberezhnoy.arraysbasis;
 
+import java.util.Arrays;
+
 public class CyclesInArrays {
     public static void main(String[] args) {
         String[] names = {
@@ -9,9 +11,24 @@ public class CyclesInArrays {
                 "Pavel",
                 "Oleg"
         };
-
-        if (!names[0].startsWith("P")) {
-            System.out.println(names[0]);
+        for (int i = 0; i < names.length; i++) {
+            if (!names[i].startsWith("P")) {
+                System.out.println(names[i]);
+            }
         }
+
+        for (String name : names) {
+            if (!name.startsWith("P")) System.out.println(name);
+        }
+
+        Arrays.sort(names);
+        System.out.println(Arrays.toString(names));
+
+        String[] names2 = names.clone();
+        names2[0] = null;
+
+        System.out.println(Arrays.toString(names));
+        System.out.println(Arrays.toString(names2));
+
     }
 }

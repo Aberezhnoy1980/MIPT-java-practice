@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>webinar001</module>
-        <module>API Operations History</module>
+        <module>API-Operations-History</module>
         <module>webinar002</module>
         <module>webinar003</module>
         <module>webinar004</module>

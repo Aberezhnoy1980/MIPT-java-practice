@@ -14,6 +14,8 @@
         <module>webinar003</module>
         <module>webinar004</module>
         <module>webinar005</module>
+        <module>webinar006</module>
+        <module>webinar007</module>
     </modules>
     <packaging>pom</packaging>
 

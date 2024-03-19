@@ -1,16 +1,20 @@
 package ru.aberezhnoy.util;
 
-import ru.aberezhnoy.persist.ConsolePrintable;
+import ru.aberezhnoy.model.ConsolePrintable;
 
-public class Storage<T extends ConsolePrintable> {
+import java.util.Iterator;
+
+public class Storage<T extends ConsolePrintable> implements Iterable<T> {
     private static final int DEFAULT_CAPACITY = 8;
     private T[] data;
     private int size;
-//    private final AtomicLong identity = new AtomicLong(0);
+    private int idx;
 
     @SuppressWarnings("unchecked")
     public Storage(int initialCapacity) {
         this.data = (T[]) new ConsolePrintable[initialCapacity];
+        this.size = 0;
+        this.idx = 0;
     }
 
     public Storage() {
@@ -81,5 +85,30 @@ public class Storage<T extends ConsolePrintable> {
                 data[i].print();
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        for (T e : data) {
+            if (e != null)
+                sb.append(e).append("\n");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return idx < size;
+            }
+
+            @Override
+            public T next() {
+                return data[idx++];
+            }
+        };
     }
 }

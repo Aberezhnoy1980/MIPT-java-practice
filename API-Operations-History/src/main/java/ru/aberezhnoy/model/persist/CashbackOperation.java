@@ -1,23 +1,16 @@
-package ru.aberezhnoy.persist.model;
+package ru.aberezhnoy.model.persist;
 
-import ru.aberezhnoy.persist.ConsolePrintable;
+import ru.aberezhnoy.model.ConsolePrintable;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class CashbackOperation extends Operation implements ConsolePrintable, Comparable<CashbackOperation> {
     private int cashbackAmount;
     private String operationType;
 
-    public CashbackOperation(LocalDate date, int amount, String description) {
-        super(null, date, new BigDecimal(amount), description);
-        this.operationType = this.getClass().getSimpleName();
-        this.cashbackAmount = Integer.parseInt(String.valueOf(this.getAmount().multiply(new BigDecimal("0.15"))).split("\\.")[0]);
-    }
-
-    public CashbackOperation(String date, String amount, String description) {
-        super(null, LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), new BigDecimal(amount), description);
+    public CashbackOperation(long customerId, String amount, String description) {
+        super(null, customerId, LocalDateTime.now(), new BigDecimal(amount), description);
         this.operationType = this.getClass().getSimpleName();
         this.cashbackAmount = Integer.parseInt(String.valueOf(this.getAmount().multiply(new BigDecimal("0.15"))).split("\\.")[0]);
     }

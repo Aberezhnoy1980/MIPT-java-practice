@@ -1,10 +1,13 @@
-package ru.aberezhnoy.persist.model;
+package ru.aberezhnoy.model.persist;
 
-import ru.aberezhnoy.persist.ConsolePrintable;
+import ru.aberezhnoy.model.ConsolePrintable;
+import ru.aberezhnoy.util.CustomerValidator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class Customer implements ConsolePrintable, Comparable<Customer> {
     private long id;
@@ -15,6 +18,7 @@ public class Customer implements ConsolePrintable, Comparable<Customer> {
     private Gender gender;
     private String email;
     private String phoneNumber;
+    private Set<Operation> operations;
 
     public Customer() {
     }
@@ -28,6 +32,7 @@ public class Customer implements ConsolePrintable, Comparable<Customer> {
         this.gender = Gender.valueOf(gender.toUpperCase());
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.operations = new HashSet<>();
     }
 
     public long getId() {
@@ -36,6 +41,42 @@ public class Customer implements ConsolePrintable, Comparable<Customer> {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Set<Operation> getOperations() {
+        return operations;
+    }
+
+    public void addOperations(Operation operation) {
+        this.operations.add(operation);
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     @Override
@@ -50,7 +91,13 @@ public class Customer implements ConsolePrintable, Comparable<Customer> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Customer customer)) return false;
-        return id == customer.id && Objects.equals(phoneNumber, customer.phoneNumber) && Objects.equals(firstname, customer.firstname) && Objects.equals(lastname, customer.lastname) && Objects.equals(surname, customer.surname) && gender == customer.gender && Objects.equals(email, customer.email);
+        return id == customer.id
+                && Objects.equals(phoneNumber, customer.phoneNumber)
+                && Objects.equals(firstname, customer.firstname)
+                && Objects.equals(lastname, customer.lastname)
+                && Objects.equals(surname, customer.surname)
+                && gender == customer.gender
+                && Objects.equals(email, customer.email);
     }
 
     @Override
@@ -83,40 +130,48 @@ public class Customer implements ConsolePrintable, Comparable<Customer> {
 
         public Builder() {
             this.customer = new Customer();
+            this.customer.operations = new HashSet<>();
         }
 
         public Builder setFirstname(String firstname) {
-            this.customer.firstname = firstname;
+            if (CustomerValidator.validateName(firstname))
+                this.customer.firstname = firstname;
             return this;
         }
 
         public Builder setLastname(String lastname) {
-            this.customer.lastname = lastname;
+            if (CustomerValidator.validateName(lastname))
+                this.customer.lastname = lastname;
             return this;
         }
 
         public Builder setSurname(String surname) {
-            this.customer.surname = surname;
+            if (CustomerValidator.validateName(surname))
+                this.customer.surname = surname;
             return this;
         }
 
         public Builder setBirthDate(String birthDate) {
-            this.customer.birthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            if (CustomerValidator.validateBirthdate(birthDate))
+                this.customer.birthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             return this;
         }
 
         public Builder setGender(String gender) {
+//            if (CustomerValidator.validateGender(gender))
             this.customer.gender = Gender.valueOf(gender.toUpperCase());
             return this;
         }
 
         public Builder setEmail(String email) {
-            this.customer.email = email;
+            if (CustomerValidator.validateEmail(email))
+                this.customer.email = email;
             return this;
         }
 
         public Builder setPhoneNumber(String phoneNumber) {
-            this.customer.phoneNumber = phoneNumber;
+            if (CustomerValidator.validatePhoneNumber(phoneNumber))
+                this.customer.phoneNumber = phoneNumber;
             return this;
         }
 

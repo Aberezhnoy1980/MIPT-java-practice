@@ -24,5 +24,4 @@ public class MainApp {
         int x;
         int y;
     }
-
 }

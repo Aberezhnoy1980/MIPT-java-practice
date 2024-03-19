@@ -1,8 +1,5 @@
 package ru.aberezhnoy;
 
-import javax.imageio.IIOException;
-import javax.imageio.metadata.IIOInvalidTreeException;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;

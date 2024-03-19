@@ -1,12 +1,16 @@
-package ru.aberezhnoy.persist;
+package ru.aberezhnoy.model;
 
+import ru.aberezhnoy.contract.Contract;
+import ru.aberezhnoy.contract.TransactionRepository;
+import ru.aberezhnoy.exception.CustomerNotFound;
 import ru.aberezhnoy.exception.OperationNotFound;
-import ru.aberezhnoy.persist.model.Customer;
+import ru.aberezhnoy.model.persist.Customer;
 import ru.aberezhnoy.util.Storage;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class CustomerRepository implements TransactionRepository<Customer> {
+public class CustomerRepository implements Contract.Model<Customer> {
     private static AtomicLong identity;
     private final Storage<Customer> customers;
     static CustomerRepository instance;
@@ -25,40 +29,29 @@ public class CustomerRepository implements TransactionRepository<Customer> {
     }
 
     @Override
-    public void findAll() {
-        customers.consolePrint();
+    public Optional<Storage<Customer>> findAll() {
+        return Optional.of(customers);
     }
 
     @Override
-    public Customer findById(long id) {
+    public Optional<Customer> findById(long id) {
         for (int i = 0; i < customers.size(); i++) {
             if (customers.getElementByIndex(i).getId() == id) {
-                return customers.getElementByIndex(i);
+                return Optional.of(customers.getElementByIndex(i));
             }
         }
-        throw new OperationNotFound(String.format("Operation with id %s not found%n", id));
+        return Optional.empty();
     }
 
     @Override
-    public CustomerRepository save(Customer customer) {
+    public void save(Customer customer) {
         customer.setId(identity.incrementAndGet());
         customers.add(customer);
-        return this;
     }
-
-//    public void saveOperation(Scanner sc) {
-//
-//        operation.setId(identity.incrementAndGet());
-//        operations.add(operation);
-//        return this;
-//    }
 
     @Override
     public void removeById(long id) {
-        if (customers.contains(findById(id))) {
-            customers.removeByElement(findById(id));
-        } else
-            throw new OperationNotFound(String.format("Operation with id %s not found%n", id));
+        customers.removeByElement(findById(id).orElseThrow(() -> new CustomerNotFound(id)));
     }
 
 }

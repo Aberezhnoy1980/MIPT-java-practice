@@ -1,19 +1,23 @@
-package ru.aberezhnoy.persist.model;
+package ru.aberezhnoy.model.persist;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.aberezhnoy.persist.ConsolePrintable;
+import ru.aberezhnoy.contract.Contract;
+import ru.aberezhnoy.exception.CustomerNotFound;
+import ru.aberezhnoy.factory.Factory;
+import ru.aberezhnoy.model.ConsolePrintable;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class Operation implements ConsolePrintable {
     private Long id;
-    private LocalDate date;
+    private long customerId;
+    private LocalDateTime date;
     private BigDecimal amount;
     private String description;
 

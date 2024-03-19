@@ -1,7 +1,9 @@
 package ru.aberezhnoy.factory;
 
-import ru.aberezhnoy.persist.CustomerRepository;
-import ru.aberezhnoy.persist.OperationRepository;
+import ru.aberezhnoy.model.CustomerRepository;
+import ru.aberezhnoy.model.OperationRepository;
+import ru.aberezhnoy.presenter.CustomerService;
+import ru.aberezhnoy.presenter.OperationService;
 
 import java.util.Scanner;
 
@@ -16,5 +18,13 @@ public class Factory {
 
     public static CustomerRepository getCustomerRepository() {
         return CustomerRepository.getInstance();
+    }
+
+    public static OperationService getOperationService() {
+        return OperationService.getInstance();
+    }
+
+    public static CustomerService getCustomerService() {
+        return CustomerService.getInstance();
     }
 }

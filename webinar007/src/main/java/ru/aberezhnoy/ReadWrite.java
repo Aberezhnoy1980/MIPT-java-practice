@@ -1,13 +1,9 @@
 package ru.aberezhnoy;
 
-import javax.management.relation.RoleInfoNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.List;
 
 public class ReadWrite {
     public static void main(String[] args) {

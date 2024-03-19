@@ -1,12 +1,15 @@
-package ru.aberezhnoy.persist;
+package ru.aberezhnoy.model;
 
+import ru.aberezhnoy.contract.Contract;
+import ru.aberezhnoy.contract.TransactionRepository;
 import ru.aberezhnoy.exception.OperationNotFound;
-import ru.aberezhnoy.persist.model.Operation;
+import ru.aberezhnoy.model.persist.Operation;
 import ru.aberezhnoy.util.Storage;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class OperationRepository implements TransactionRepository<Operation> {
+public class OperationRepository implements Contract.Model<Operation> {
     private static AtomicLong identity;
     private final Storage<Operation> operations;
     static OperationRepository instance;
@@ -14,7 +17,6 @@ public class OperationRepository implements TransactionRepository<Operation> {
     private OperationRepository() {
         identity = new AtomicLong(0);
         this.operations = new Storage<>();
-
     }
 
     public static OperationRepository getInstance() {
@@ -24,41 +26,33 @@ public class OperationRepository implements TransactionRepository<Operation> {
         return instance;
     }
 
+    /**
+     * For future scaling and connection with real databases
+     * @return An Optional with te value present
+     */
     @Override
-    public void findAll() {
-        operations.consolePrint();
+    public Optional<Storage<Operation>> findAll() {
+        return Optional.of(operations);
     }
 
     @Override
-    public Operation findById(long id) {
+    public Optional<Operation> findById(long id) {
         for (int i = 0; i < operations.size(); i++) {
             if (operations.getElementByIndex(i).getId() == id) {
-                return operations.getElementByIndex(i);
+                return Optional.of(operations.getElementByIndex(i));
             }
         }
-        throw new OperationNotFound(String.format("Operation with id %s not found%n", id));
+        return Optional.empty();
     }
 
     @Override
-    public OperationRepository save(Operation operation) {
+    public void save(Operation operation) {
         operation.setId(identity.incrementAndGet());
         operations.add(operation);
-        return this;
     }
-
-//    public void saveOperation(Scanner sc) {
-//
-//        operation.setId(identity.incrementAndGet());
-//        operations.add(operation);
-//        return this;
-//    }
 
     @Override
     public void removeById(long id) {
-        if (operations.contains(findById(id))) {
-            operations.removeByElement(findById(id));
-        } else
-            throw new OperationNotFound(String.format("Operation with id %s not found%n", id));
+        operations.removeByElement(findById(id).orElseThrow(() -> new OperationNotFound(id)));
     }
-
 }

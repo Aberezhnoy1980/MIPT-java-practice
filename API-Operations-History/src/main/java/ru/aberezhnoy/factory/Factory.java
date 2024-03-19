@@ -4,6 +4,7 @@ import ru.aberezhnoy.model.CustomerRepository;
 import ru.aberezhnoy.model.OperationRepository;
 import ru.aberezhnoy.presenter.CustomerService;
 import ru.aberezhnoy.presenter.OperationService;
+import ru.aberezhnoy.presenter.Presenter;
 
 import java.util.Scanner;
 
@@ -26,5 +27,8 @@ public class Factory {
 
     public static CustomerService getCustomerService() {
         return CustomerService.getInstance();
+    }
+    public static Presenter getPresenter() {
+        return Presenter.getInstance();
     }
 }

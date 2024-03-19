@@ -1,9 +1,7 @@
 package ru.aberezhnoy.model;
 
 import ru.aberezhnoy.contract.Contract;
-import ru.aberezhnoy.contract.TransactionRepository;
 import ru.aberezhnoy.exception.CustomerNotFound;
-import ru.aberezhnoy.exception.OperationNotFound;
 import ru.aberezhnoy.model.persist.Customer;
 import ru.aberezhnoy.util.Storage;
 

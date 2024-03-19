@@ -1,6 +1,7 @@
 package ru.aberezhnoy.contract;
 
 import ru.aberezhnoy.model.ConsolePrintable;
+import ru.aberezhnoy.model.persist.Customer;
 import ru.aberezhnoy.model.persist.Operation;
 import ru.aberezhnoy.util.Storage;
 
@@ -23,6 +24,13 @@ public interface Contract {
     }
 
     interface Presenter {
-        Optional<Set<Operation>> findOperationsByCustomer(long id);
+        void saveCustomer(Customer customer);
+
+        void saveOperation(Operation operation);
+
+        void findAllCustomers();
+        void findAllOperations();
+
+        Set<Operation> findOperationsByCustomer(long id);
     }
 }

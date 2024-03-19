@@ -6,19 +6,14 @@ import ru.aberezhnoy.factory.Factory;
 import ru.aberezhnoy.model.persist.CashbackOperation;
 import ru.aberezhnoy.model.persist.Customer;
 import ru.aberezhnoy.model.persist.LoanOperation;
-import ru.aberezhnoy.model.persist.Operation;
-import ru.aberezhnoy.presenter.CustomerService;
-import ru.aberezhnoy.presenter.OperationService;
 
 import static ru.aberezhnoy.util.Prompt.prompt;
 
 public class View implements Contract.View {
-    private final OperationService os;
-    private final CustomerService cs;
+    private final Contract.Presenter presenter;
 
     public View() {
-        this.os = Factory.getOperationService();
-        this.cs = Factory.getCustomerService();
+        this.presenter = Factory.getPresenter();
     }
 
     @Override
@@ -30,15 +25,19 @@ public class View implements Contract.View {
             System.out.println("""
                     Please select what you want to do:
                     1. Register a user (create)
-                    2. Rake the transaction
-                    3. Get a list of operations
-                    4. Leave the application
+                    2. Make the transaction
+                    3. Get a list of customers
+                    4. Get a list of operations
+                    5. Get  list of operation by customer
+                    6. Delete a customer
+                    7. Delete operation
+                    8. Leave the application
                     Enter a number from the list above
                       """);
             int choice = prompt();
             switch (choice) {
                 case 1:
-                    cs.save(Customer.builder()
+                    presenter.saveCustomer(Customer.builder()
                             .setFirstname(prompt("Enter your first name: "))
                             .setLastname(prompt("Enter your last name: "))
                             .setSurname(prompt("Enter your surname: "))
@@ -52,30 +51,32 @@ public class View implements Contract.View {
                     System.out.println("Please, enter 1 for loan, or 2 for cashback: ");
                     int operationType = prompt();
                     if (operationType == 1)
-                        os.save(new LoanOperation(Long.parseLong(prompt("Enter customer id: ")), prompt("Enter amount: "), prompt("Enter description: "), prompt("Enter loan id: ")));
+                        presenter.saveOperation(new LoanOperation(Long.parseLong(prompt("Enter customer id: ")), prompt("Enter amount: "), prompt("Enter description: "), prompt("Enter loan id: ")));
                     else if (operationType == 2)
-                        os.save(new CashbackOperation(Long.parseLong(prompt("Enter customer id: ")), prompt("Enter amount: "), prompt("Enter description: ")));
+                        presenter.saveOperation(new CashbackOperation(Long.parseLong(prompt("Enter customer id: ")), prompt("Enter amount: "), prompt("Enter description: ")));
                     else
                         throw new UnexpectedChoiceException();
                     break;
                 case 3:
-                    System.out.println("Please, enter customer id: ");
-                    int id = prompt();
-                    for (Operation o : os.findAll()) {
-                        if (o.getCustomerId() == id)
-                            System.out.printf("%s%n", o);
-                    }
+                    presenter.findAllCustomers();
                     break;
                 case 4:
-                    flag = false;
+                    presenter.findAllOperations();
                     break;
                 case 5:
-//                    System.out.println("Please, enter customer id: ");
-                    System.out.println(cs.findAll());
+                    System.out.println("Please, enter customer id: ");
+                    presenter.findOperationsByCustomer(prompt());
                     break;
-                case 6:
+//                case 6:
 //                    System.out.println("Please, enter customer id: ");
-                    System.out.println(cs.findById(1).getPhoneNumber());
+//                    presenter.removeCustomerById(prompt());
+//                    break;
+//                case 5:
+//                    System.out.println("Please, enter customer id: ");
+//                    presenter.removeOperationById(prompt());
+//                    break;
+                case 8:
+                    flag = false;
                     break;
                 default:
                     throw new UnexpectedChoiceException();

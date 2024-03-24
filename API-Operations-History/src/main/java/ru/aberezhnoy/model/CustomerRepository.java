@@ -51,5 +51,4 @@ public class CustomerRepository implements Contract.Model<Customer> {
     public void removeById(long id) {
         customers.removeByElement(findById(id).orElseThrow(() -> new CustomerNotFound(id)));
     }
-
 }

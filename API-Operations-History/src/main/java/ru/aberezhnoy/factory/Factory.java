@@ -28,6 +28,7 @@ public class Factory {
     public static CustomerService getCustomerService() {
         return CustomerService.getInstance();
     }
+
     public static Presenter getPresenter() {
         return Presenter.getInstance();
     }

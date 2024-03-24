@@ -6,7 +6,6 @@ import ru.aberezhnoy.model.persist.Operation;
 import ru.aberezhnoy.util.Storage;
 
 import java.util.Optional;
-import java.util.Set;
 
 public interface Contract {
     interface View {
@@ -28,9 +27,10 @@ public interface Contract {
 
         void saveOperation(Operation operation);
 
-        void findAllCustomers();
-        void findAllOperations();
+        void showAllCustomers();
 
-        Set<Operation> findOperationsByCustomer(long id);
+        void showAllOperations();
+
+        void showOperationsByCustomer(long id);
     }
 }

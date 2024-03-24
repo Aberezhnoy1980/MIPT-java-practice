@@ -3,9 +3,9 @@ package ru.aberezhnoy.presenter;
 import ru.aberezhnoy.contract.Contract;
 import ru.aberezhnoy.exception.CustomerNotFound;
 import ru.aberezhnoy.factory.Factory;
+import ru.aberezhnoy.model.CustomerRepository;
 import ru.aberezhnoy.model.persist.Customer;
 import ru.aberezhnoy.model.persist.Operation;
-import ru.aberezhnoy.util.StatementService;
 
 import java.util.Set;
 
@@ -29,6 +29,10 @@ public class Presenter implements Contract.Presenter {
         return instance;
     }
 
+    public CustomerService getCustomerService() {
+        return customerService;
+    }
+
     @Override
     public void saveCustomer(Customer customer) {
         customerService.save(customer);
@@ -38,28 +42,30 @@ public class Presenter implements Contract.Presenter {
     @Override
     public void saveOperation(Operation operation) {
         operationService.save(operation);
-        long id = operation.getCustomerId();
         Customer customer = customerService.findById(operation.getCustomerId());
         customer.addOperations(operation);
         statementService.updateCustomer(customer);
     }
 
     @Override
-    public void findAllCustomers() {
-        statementService.findAllCustomers();
+    public void showAllCustomers() {
+        for (Customer c : statementService.getAllCustomers()) {
+            System.out.println(c);
+        }
     }
 
     @Override
-    public void findAllOperations() {
-        statementService.findAllOperations();
+    public void showAllOperations() {
+        for (Operation o : statementService.getAllOperations()) {
+            System.out.println(o);
+        }
     }
 
     @Override
-    public Set<Operation> findOperationsByCustomer(long id) {
-        return statementService.getOperationsByCustomer(id).orElseThrow(() -> new CustomerNotFound(id));
-    }
-
-    public int[] findOperationsByCustomer2(long id) {
-        return statementService.getOperationsByCustomer2(id).orElseThrow(() -> new CustomerNotFound(id));
+    public void showOperationsByCustomer(long id) {
+        Set<Operation> customerOperations = statementService.getOperationsByCustomer(id).orElseThrow(() -> new CustomerNotFound(id));
+        for (Operation o : customerOperations) {
+            System.out.println(o);
+        }
     }
 }

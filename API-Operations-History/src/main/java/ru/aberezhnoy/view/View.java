@@ -7,7 +7,7 @@ import ru.aberezhnoy.model.persist.CashbackOperation;
 import ru.aberezhnoy.model.persist.Customer;
 import ru.aberezhnoy.model.persist.LoanOperation;
 
-import static ru.aberezhnoy.util.Prompt.prompt;
+import static ru.aberezhnoy.util.Prompt.*;
 
 public class View implements Contract.View {
     private final Contract.Presenter presenter;
@@ -22,7 +22,7 @@ public class View implements Contract.View {
 
         System.out.println("Welcome to the application!");
         while (flag) {
-            System.out.println("""
+            int choice = intResp("""
                     Please select what you want to do:
                     1. Register a user (create)
                     2. Make the transaction
@@ -34,38 +34,35 @@ public class View implements Contract.View {
                     8. Leave the application
                     Enter a number from the list above
                       """);
-            int choice = prompt();
             switch (choice) {
                 case 1:
                     presenter.saveCustomer(Customer.builder()
-                            .setFirstname(prompt("Enter your first name: "))
-                            .setLastname(prompt("Enter your last name: "))
-                            .setSurname(prompt("Enter your surname: "))
-                            .setBirthDate(prompt("Enter your birth date. Please, use dd/md/yyyy format: "))
-                            .setGender(prompt("Enter your gender: "))
-                            .setPhoneNumber("+7" + prompt("Enter your phone number: \n+7"))
-                            .setEmail(prompt("Enter your email: "))
+                            .setFirstname(stringResp("Enter your first name: "))
+                            .setLastname(stringResp("Enter your last name: "))
+                            .setSurname(stringResp("Enter your surname: "))
+                            .setBirthDate(stringResp("Enter your birth date. Please, use dd/md/yyyy format: "))
+                            .setGender(stringResp("Enter your gender: "))
+                            .setPhoneNumber("+7" + stringResp("Enter your phone number: \n+7"))
+                            .setEmail(stringResp("Enter your email: "))
                             .build());
                     break;
                 case 2:
-                    System.out.println("Please, enter 1 for loan, or 2 for cashback: ");
-                    int operationType = prompt();
+                    int operationType = intResp("Please, enter 1 for loan, or 2 for cashback: ");
                     if (operationType == 1)
-                        presenter.saveOperation(new LoanOperation(Long.parseLong(prompt("Enter customer id: ")), prompt("Enter amount: "), prompt("Enter description: "), prompt("Enter loan id: ")));
+                        presenter.saveOperation(new LoanOperation(longResp("Enter customer id: "), stringResp("Enter amount: "), stringResp("Enter description: "), stringResp("Enter loan id: ")));
                     else if (operationType == 2)
-                        presenter.saveOperation(new CashbackOperation(Long.parseLong(prompt("Enter customer id: ")), prompt("Enter amount: "), prompt("Enter description: ")));
+                        presenter.saveOperation(new CashbackOperation(longResp("Enter customer id: "), stringResp("Enter amount: "), stringResp("Enter description: ")));
                     else
                         throw new UnexpectedChoiceException();
                     break;
                 case 3:
-                    presenter.findAllCustomers();
+                    presenter.showAllCustomers();
                     break;
                 case 4:
-                    presenter.findAllOperations();
+                    presenter.showAllOperations();
                     break;
                 case 5:
-                    System.out.println("Please, enter customer id: ");
-                    presenter.findOperationsByCustomer(prompt());
+                    presenter.showOperationsByCustomer(intResp("Please, enter customer id: "));
                     break;
 //                case 6:
 //                    System.out.println("Please, enter customer id: ");

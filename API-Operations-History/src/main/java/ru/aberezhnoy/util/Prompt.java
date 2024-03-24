@@ -1,15 +1,22 @@
 package ru.aberezhnoy.util;
 
+import ru.aberezhnoy.factory.Factory;
+
 import java.util.Scanner;
 
 public class Prompt {
-    public static String prompt(String message) {
-        Scanner sc = new Scanner(System.in);
+    private static final Scanner sc = Factory.getScanner();
+    public static String stringResp(String message) {
         System.out.print(message);
         return sc.next();
     }
-    public static int prompt() {
-        Scanner sc = new Scanner(System.in);
+    public static int intResp(String message) {
+        System.out.print(message);
         return sc.nextInt();
+    }
+
+    public static long longResp(String message) {
+        System.out.print(message);
+        return sc.nextLong();
     }
 }
